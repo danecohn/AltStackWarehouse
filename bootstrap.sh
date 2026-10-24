@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 : "${ALTSTACK_ORIGIN:?}" "${OFFICE_ORIGIN:?}" "${WAREHOUSE_ORIGIN:?}" "${WAREHOUSE_OIDC_SECRET:?}" "${WAREHOUSE_SERVICE_SECRET:?}"
+# Apache aborts with "More than one MPM loaded" if more than one MPM is enabled.
+a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true
+a2enmod mpm_prefork >/dev/null 2>&1 || true
 occ() { php /var/www/html/occ "$@"; }
 cp -R /opt/altstack/user_oidc /var/www/html/custom_apps/
 cp -R /opt/altstack/warehouse/altstack /var/www/html/custom_apps/

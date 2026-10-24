@@ -3,6 +3,7 @@ RUN set -eux; curl -fL --retry 3 -o /tmp/user_oidc.tar.gz https://github.com/nex
 COPY . /opt/altstack/warehouse/
 COPY assets/logo.svg /opt/altstack/logo.svg
 RUN mkdir -p /docker-entrypoint-hooks.d/before-starting; cp /opt/altstack/warehouse/bootstrap.sh /docker-entrypoint-hooks.d/before-starting/altstack.sh; chmod 755 /docker-entrypoint-hooks.d/before-starting/altstack.sh
+RUN a2dismod -f mpm_event mpm_worker >/dev/null 2>&1 || true; a2enmod mpm_prefork >/dev/null
 ENV NEXTCLOUD_DATA_DIR=/var/www/html/data PHP_MEMORY_LIMIT=512M PHP_UPLOAD_LIMIT=512M APACHE_BODY_LIMIT=536870912
 LABEL org.opencontainers.image.title="AltStack Warehouse" org.opencontainers.image.licenses="AGPL-3.0-or-later" org.opencontainers.image.source="https://github.com/danecohn/AltStackWarehouse"
 EXPOSE 80
