@@ -1,5 +1,12 @@
 #!/bin/sh
 set -eu
+# Validate the effective runtime config after platform initialization.
+a2dismod mpm_event mpm_worker
+a2enmod mpm_prefork
+if ! apache2ctl -t; then
+  grep -R -n -E "LoadModule.*mpm|Include" /etc/apache2 || true
+  exit 1
+fi
 : "${ALTSTACK_ORIGIN:?}" "${OFFICE_ORIGIN:?}" "${WAREHOUSE_ORIGIN:?}" "${WAREHOUSE_OIDC_SECRET:?}" "${WAREHOUSE_SERVICE_SECRET:?}"
 occ() { php /var/www/html/occ "$@"; }
 cp -R /opt/altstack/user_oidc /var/www/html/custom_apps/
