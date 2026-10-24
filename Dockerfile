@@ -9,6 +9,11 @@ RUN a2dismod mpm_event mpm_worker && a2enmod mpm_prefork \
  && apache2ctl -t
 RUN set -eux; curl -fL --retry 3 -o /tmp/user_oidc.tar.gz https://github.com/nextcloud-releases/user_oidc/releases/download/v8.9.0/user_oidc-v8.9.0.tar.gz; echo 'e3f8bc89d07e87993a805eab774b49a14c6b732edf5c9f705df2389596ab9e71  /tmp/user_oidc.tar.gz' | sha256sum -c -; mkdir -p /opt/altstack; tar -xzf /tmp/user_oidc.tar.gz -C /opt/altstack; rm /tmp/user_oidc.tar.gz
 COPY . /opt/altstack/warehouse/
+# Serve readiness outside Nextcloud's front-controller rewrite rules.
+RUN mkdir -p /opt/altstack/health \
+ && printf '%s\n' '<?php require "/var/www/html/status.php";' > /opt/altstack/health/index.php \
+ && printf '%s\n' 'Alias /healthz/ /opt/altstack/health/' '<Directory /opt/altstack/health>' 'Require all granted' 'AllowOverride None' 'DirectoryIndex index.php' '</Directory>' > /etc/apache2/conf-enabled/altstack-health.conf \
+ && apache2ctl -t
 COPY assets/logo.svg /opt/altstack/logo.svg
 RUN mkdir -p /docker-entrypoint-hooks.d/before-starting; cp /opt/altstack/warehouse/bootstrap.sh /docker-entrypoint-hooks.d/before-starting/altstack.sh; chmod 755 /docker-entrypoint-hooks.d/before-starting/altstack.sh
 ENV NEXTCLOUD_DATA_DIR=/var/www/html/data PHP_MEMORY_LIMIT=512M PHP_UPLOAD_LIMIT=512M APACHE_BODY_LIMIT=536870912
