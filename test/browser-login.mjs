@@ -17,7 +17,7 @@ for(let step=0;step<20;step++){
   response=await request(target+'/confirm',{method:'POST',headers:{origin:'http://127.0.0.1:3100','content-type':'application/x-www-form-urlencoded'},body:'altstack_session=fixture-human'});approved=true;
  }
  if(response.status>=300&&response.status<400&&response.headers.has('location')){target=new URL(response.headers.get('location'),target).href;continue;}
- assert.equal(response.status,200,(await response.text()).slice(0,1200));break;
+ assert.equal(response.status,200,(await response.text()).replace(/<script[\s\S]*?<\/script>/g,'').replace(/<style[\s\S]*?<\/style>/g,'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').slice(-2500));break;
 }
 assert.ok(approved,'Nextcloud must authenticate through AltStack');
 response=await request('http://127.0.0.1/ocs/v2.php/cloud/user?format=json',{headers:{'OCS-APIRequest':'true'}});
