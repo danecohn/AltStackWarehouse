@@ -6,6 +6,8 @@ cp -R /opt/altstack/user_oidc /var/www/html/custom_apps/
 cp -R /opt/altstack/warehouse/altstack /var/www/html/custom_apps/
 cp /opt/altstack/warehouse/altstack.config.php /var/www/html/config/altstack.config.php
 chown -R www-data:www-data /var/www/html/custom_apps/user_oidc /var/www/html/custom_apps/altstack /var/www/html/config/altstack.config.php
+mkdir -p /var/www/html/healthz
+cp /opt/altstack/warehouse/healthz.php /var/www/html/healthz/index.php
 occ app:enable user_oidc altstack
 occ user_oidc:provider AltStack --clientid=altstack-warehouse --clientsecret-env=WAREHOUSE_OIDC_SECRET --discoveryuri="$ALTSTACK_ORIGIN/sso/.well-known/openid-configuration" --unique-uid=0 --mapping-uid=sub --mapping-display-name=name --mapping-quota=quota --scope='openid profile quota' --check-bearer=1 --bearer-provisioning=1
 occ config:app:set user_oidc allow_multiple_user_backends --value=0
