@@ -26,6 +26,7 @@ class Application extends App implements IBootstrap {
   }
   Filesystem::addStorageWrapper('altstack_global_quota',static function($mountPoint,$storage,$mount){return $mount instanceof HomeMountPoint?new GlobalQuota(['storage'=>$storage,'quota'=>128000000000,'root'=>'files']):$storage;},100);
   Util::addStyle('altstack','alpine');
-  $context->injectFn(static function(IConfig $config,INavigationManager $navigation){$settings=$config->getSystemValue('altstack',[]);foreach(['desktop'=>['AltStack desktop',$settings['origin']??''],'office'=>['AltOffice',$settings['office']??''],'search'=>['AltStack Search',($settings['origin']??'').'/search/'],'social'=>['AltStack Social',($settings['origin']??'').'/social']]as$id=>$item)$navigation->add(['id'=>'altstack_'.$id,'order'=>3,'href'=>$item[1],'icon'=>'','name'=>$item[0]]);});
+  $context->injectFn(static function(IConfig $config,INavigationManager $navigation){$settings=$config->getSystemValue('altstack',[]);foreach(['desktop'=>['AltStack desktop',$settings['origin']??''],'office'=>['AltOffice',$settings['office']??''],'search'=>['AltStack Search',($settings['origin']??'').'/search/'],'mail'=>['AltStack Mail',($settings['origin']??'').'/mail'],'calendar'=>['AltStack Calendar',($settings['origin']??'').'/calendar'],'social'=>['AltStack Social',($settings['origin']??'').'/social']]as$id=>$item)$navigation->add(['id'=>'altstack_'.$id,'order'=>3,'href'=>$item[1],'icon'=>'','name'=>$item[0]]);});
  }
 }
+
