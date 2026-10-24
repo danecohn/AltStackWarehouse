@@ -33,6 +33,18 @@ jobs:
           docker exec -u www-data warehouse php occ config:app:set --value=1 --type=boolean user_oidc allow_insecure_http
       - name: Verify browser account authorization through Nextcloud
         run: node test/browser-login.mjs
+      - uses: actions/checkout@v6
+        with:
+          repository: danecohn/AmerikaOffice
+          ref: dbbac12f7c3c864d0ce47483a8523bb5ce64a010
+          path: office-source
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.3'
+      - run: bun install --frozen-lockfile
+        working-directory: office-source
+      - name: Verify existing Office migration and editor saves against real Warehouse
+        run: bun test/office-sync.ts
       - name: Verify real WebDAV, personal quotas and shared capacity
         run: |
           TOKEN=$(curl -fsS http://127.0.0.1:3100/fixture/token | jq -r .token)
