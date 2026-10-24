@@ -1,0 +1,59 @@
+name: Build and verify Warehouse
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.22.1'
+      - name: Build pinned Nextcloud distribution
+        run: |
+          docker build -t altstack-warehouse .
+          docker run --rm --entrypoint sh altstack-warehouse -c 'find /opt/altstack/warehouse/altstack -name "*.php" -exec php -l {} \;'
+      - name: Start real OIDC authority and storage dependencies
+        run: |
+          cd test/identity
+          npm install --ignore-scripts
+          node server.mjs > /tmp/identity.log 2>&1 &
+          docker run -d --name warehouse-db --network host -e PGPORT=5439 -e POSTGRES_USER=warehouse -e POSTGRES_PASSWORD=warehouse-fixture-db-password -e POSTGRES_DB=warehouse postgres:17-alpine
+          docker run -d --name warehouse-cache --network host redis:8-alpine redis-server --port 6399 --requirepass warehouse-fixture-cache-password
+      - name: Bootstrap the real Nextcloud service
+        run: |
+          docker run -d --name warehouse --network host -v "$PWD/test/test.config.php:/var/www/html/config/zz-ci.config.php" -e POSTGRES_HOST=127.0.0.1:5439 -e POSTGRES_USER=warehouse -e POSTGRES_PASSWORD=warehouse-fixture-db-password -e POSTGRES_DB=warehouse -e REDIS_HOST=127.0.0.1 -e REDIS_HOST_PORT=6399 -e REDIS_HOST_PASSWORD=warehouse-fixture-cache-password -e NEXTCLOUD_ADMIN_USER=ci-admin -e NEXTCLOUD_ADMIN_PASSWORD=warehouse-fixture-admin-password -e NEXTCLOUD_TRUSTED_DOMAINS=127.0.0.1 -e ALTSTACK_ORIGIN=http://127.0.0.1:3100 -e OFFICE_ORIGIN=http://127.0.0.1:3200 -e WAREHOUSE_ORIGIN=http://127.0.0.1 -e WAREHOUSE_OIDC_SECRET=warehouse-fixture-client-secret-1234567890 -e WAREHOUSE_SERVICE_SECRET=warehouse-fixture-service-secret-1234567890 altstack-warehouse
+          for attempt in $(seq 1 120); do curl -fsS http://127.0.0.1/status.php -o /tmp/status.json && grep -q '"installed":true' /tmp/status.json && break; sleep 2; done
+          grep -q '"installed":true' /tmp/status.json
+          docker exec -u www-data warehouse php occ config:app:set --value=1 --type=boolean user_oidc allow_insecure_http
+      - name: Verify real WebDAV, personal quotas and shared capacity
+        run: |
+          TOKEN=$(curl -fsS http://127.0.0.1:3100/fixture/token | jq -r .token)
+          USER_ID=$(curl -fsS http://127.0.0.1:3100/fixture/token | jq -r .uid)
+          DAV="http://127.0.0.1/remote.php/dav/files/$USER_ID"
+          test "$(curl -sS -o /tmp/dav.xml -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -H 'Depth: 0' -X PROPFIND "$DAV/")" = 207
+          test "$(curl -sS -o /tmp/put.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'stored document' "$DAV/Document.docx")" = 201
+          test "$(curl -fsS -H "Authorization: Bearer $TOKEN" "$DAV/Document.docx")" = 'stored document'
+          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 2000000000
+          test "$(curl -sS -o /tmp/full.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'over quota' "$DAV/Over.docx")" = 507
+          curl -fsS http://127.0.0.1:3100/fixture/plus?enabled=1
+          TOKEN=$(curl -fsS http://127.0.0.1:3100/fixture/token | jq -r .token)
+          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 2000000000
+          test "$(curl -sS -o /tmp/plus.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'plus document' "$DAV/Plus.docx")" = 201
+          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 8000000000
+          test "$(curl -sS -o /tmp/plus-full.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'over quota' "$DAV/PlusOver.docx")" = 507
+          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 128000000000
+          test "$(curl -sS -o /tmp/global-full.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'over quota' "$DAV/GlobalOver.docx")" = 507
+          curl -fsS -H "Authorization: Bearer $TOKEN" "$DAV/Document.docx" | grep -q 'stored document'
+      - name: Diagnostics
+        if: always()
+        run: |
+          docker logs warehouse || true
+          docker exec warehouse tail -c 20000 /var/www/html/data/nextcloud.log || true
+          cat /tmp/identity.log || true
+          cat /tmp/put.txt /tmp/full.txt /tmp/plus.txt /tmp/plus-full.txt /tmp/global-full.txt || true
