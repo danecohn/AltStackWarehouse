@@ -1,4 +1,6 @@
 FROM docker.io/library/nextcloud:33.0.10-apache@sha256:e02fb1a7558bae683188eb94471cdb1b4550970f905e615c8e9d10c4760f13a1
+# mod_php requires prefork; disable competing MPMs shipped by the base image.
+RUN a2dismod mpm_event mpm_worker && a2enmod mpm_prefork && apache2ctl -t
 RUN set -eux; curl -fL --retry 3 -o /tmp/user_oidc.tar.gz https://github.com/nextcloud-releases/user_oidc/releases/download/v8.9.0/user_oidc-v8.9.0.tar.gz; echo 'e3f8bc89d07e87993a805eab774b49a14c6b732edf5c9f705df2389596ab9e71  /tmp/user_oidc.tar.gz' | sha256sum -c -; mkdir -p /opt/altstack; tar -xzf /tmp/user_oidc.tar.gz -C /opt/altstack; rm /tmp/user_oidc.tar.gz
 COPY . /opt/altstack/warehouse/
 COPY assets/logo.svg /opt/altstack/logo.svg
