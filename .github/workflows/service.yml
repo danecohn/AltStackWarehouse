@@ -40,6 +40,9 @@ jobs:
           test "$(curl -sS -o /tmp/put.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'stored document' "$DAV/Document.docx")" = 201
           test "$(curl -fsS -H "Authorization: Bearer $TOKEN" "$DAV/Document.docx")" = 'stored document'
           docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 2000000000
+          docker exec -u www-data warehouse php occ user:info "$USER_ID" --output=json
+          curl -fsS -H "Authorization: Bearer $TOKEN" -H 'Depth: 0' -X PROPFIND "$DAV/" -o /tmp/quota.xml
+          cat /tmp/quota.xml
           test "$(curl -sS -o /tmp/full.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'over quota' "$DAV/Over.docx")" = 507
           curl -fsS http://127.0.0.1:3100/fixture/plus?enabled=1
           TOKEN=$(curl -fsS http://127.0.0.1:3100/fixture/token | jq -r .token)
@@ -47,7 +50,11 @@ jobs:
           test "$(curl -sS -o /tmp/plus.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'plus document' "$DAV/Plus.docx")" = 201
           docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 8000000000
           test "$(curl -sS -o /tmp/plus-full.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'over quota' "$DAV/PlusOver.docx")" = 507
-          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 128000000000
+          OTHER_TOKEN=$(curl -fsS 'http://127.0.0.1:3100/fixture/token?user=other' | jq -r .token)
+          OTHER_ID=$(curl -fsS 'http://127.0.0.1:3100/fixture/token?user=other' | jq -r .uid)
+          test "$(curl -sS -o /tmp/other.xml -w '%{http_code}' -H "Authorization: Bearer $OTHER_TOKEN" -H 'Depth: 0' -X PROPFIND "http://127.0.0.1/remote.php/dav/files/$OTHER_ID/")" = 207
+          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$USER_ID" 14
+          docker exec -u www-data warehouse php /opt/altstack/warehouse/test/quota-fixture.php "$OTHER_ID" 127999999986
           test "$(curl -sS -o /tmp/global-full.txt -w '%{http_code}' -H "Authorization: Bearer $TOKEN" -X PUT --data-binary 'over quota' "$DAV/GlobalOver.docx")" = 507
           curl -fsS -H "Authorization: Bearer $TOKEN" "$DAV/Document.docx" | grep -q 'stored document'
       - name: Diagnostics

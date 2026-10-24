@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 namespace OCA\AltStack\Listener;
 use OCP\EventDispatcher\Event;
+use OC\Files\Filesystem;
+use OC\Files\Mount\HomeMountPoint;
+use OCA\AltStack\Storage\GlobalQuota;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Files\Events\BeforeFileSystemSetupEvent;
 use OCP\IConfig;
@@ -10,7 +13,9 @@ use OCP\Files\StorageNotAvailableException;
 class QuotaListener implements IEventListener {
  public function __construct(private IConfig $config,private IClientService $clients){}
  public function handle(Event $event):void{
-  if(!$event instanceof BeforeFileSystemSetupEvent)return;$user=$event->getUser();$uid=$user->getUID();if(!preg_match('/^ast_[a-f0-9]{40}$/',$uid))return;
+  if(!$event instanceof BeforeFileSystemSetupEvent)return;
+  Filesystem::addStorageWrapper('altstack_global_quota',static function($mountPoint,$storage,$mount){return $mount instanceof HomeMountPoint?new GlobalQuota(['storage'=>$storage,'quota'=>128000000000,'root'=>'files']):$storage;},100);
+$user=$event->getUser();$uid=$user->getUID();if(!preg_match('/^ast_[a-f0-9]{40}$/',$uid))return;
   $last=(int)$this->config->getUserValue($uid,'altstack','quota_checked','0');if($last>time()-60)return;
   $settings=$this->config->getSystemValue('altstack',[]);$path='/api/internal/warehouse-entitlement?uid='.rawurlencode($uid);$time=(string)(int)round(microtime(true)*1000);$signature=rtrim(strtr(base64_encode(hash_hmac('sha256',$time."\nGET\n".$path,$settings['service_secret'],true)),'+/','-_'),'=');
   try{
@@ -23,3 +28,4 @@ class QuotaListener implements IEventListener {
   }
  }
 }
+
