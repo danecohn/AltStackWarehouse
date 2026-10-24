@@ -1,8 +1,6 @@
 #!/bin/sh
 set -eu
 # Validate the effective runtime config after platform initialization.
-a2dismod mpm_event mpm_worker
-a2enmod mpm_prefork
 if ! apache2ctl -t; then
   grep -R -n -E "LoadModule.*mpm|Include" /etc/apache2 || true
   exit 1
