@@ -27,8 +27,8 @@ jobs:
           docker run -d --name warehouse-cache --network host redis:8-alpine redis-server --port 6399 --requirepass warehouse-fixture-cache-password
       - name: Bootstrap the real Nextcloud service
         run: |
-          docker run -d --name warehouse --network host --entrypoint /bin/sh -e POSTGRES_HOST=127.0.0.1:5439 -e POSTGRES_USER=warehouse -e POSTGRES_PASSWORD=warehouse-fixture-db-password -e POSTGRES_DB=warehouse -e REDIS_HOST=127.0.0.1 -e REDIS_HOST_PORT=6399 -e REDIS_HOST_PASSWORD=warehouse-fixture-cache-password -e NEXTCLOUD_ADMIN_USER=ci-admin -e NEXTCLOUD_ADMIN_PASSWORD=warehouse-fixture-admin-password -e NEXTCLOUD_TRUSTED_DOMAINS=127.0.0.1 -e ALTSTACK_ORIGIN=http://127.0.0.1:3100 -e OFFICE_ORIGIN=http://127.0.0.1:3200 -e WAREHOUSE_ORIGIN=http://127.0.0.1 -e WAREHOUSE_OIDC_SECRET=warehouse-fixture-client-secret-1234567890 -e WAREHOUSE_SERVICE_SECRET=warehouse-fixture-service-secret-1234567890 altstack-warehouse -c 'mkdir -p /var/www/html/config; cp /opt/altstack/warehouse/test/test.config.php /var/www/html/config/zz-ci.config.php; chown -R www-data:www-data /var/www/html/config; exec /entrypoint.sh apache2-foreground' 
-          for attempt in $(seq 1 120); do curl -fsS http://127.0.0.1/status.php -o /tmp/status.json && grep -q '"installed":true' /tmp/status.json && break; sleep 2; done
+          docker run -d --name warehouse --network host --entrypoint /bin/sh -e POSTGRES_HOST=127.0.0.1:5439 -e POSTGRES_USER=warehouse -e POSTGRES_PASSWORD=warehouse-fixture-db-password -e POSTGRES_DB=warehouse -e REDIS_HOST=127.0.0.1 -e REDIS_HOST_PORT=6399 -e REDIS_HOST_PASSWORD=warehouse-fixture-cache-password -e NEXTCLOUD_ADMIN_USER=ci-admin -e NEXTCLOUD_ADMIN_PASSWORD=warehouse-fixture-admin-password -e NEXTCLOUD_TRUSTED_DOMAINS=127.0.0.1 -e ALTSTACK_ORIGIN=http://127.0.0.1:3100 -e OFFICE_ORIGIN=http://127.0.0.1:3200 -e WAREHOUSE_ORIGIN=http://127.0.0.1 -e WAREHOUSE_OIDC_SECRET=warehouse-fixture-client-secret-1234567890 -e WAREHOUSE_SERVICE_SECRET=warehouse-fixture-service-secret-1234567890 altstack-warehouse -c 'mkdir -p /var/www/html/config; cp /usr/src/nextcloud/config/*.config.php /var/www/html/config/; cp /opt/altstack/warehouse/test/test.config.php /var/www/html/config/zz-ci.config.php; chown -R www-data:www-data /var/www/html/config; exec /entrypoint.sh apache2-foreground' 
+          for attempt in $(seq 1 120); do curl --max-time 5 -fsS http://127.0.0.1/status.php -o /tmp/status.json && grep -q '"installed":true' /tmp/status.json && break; test "$(docker inspect -f '{{.State.Running}}' warehouse)" = true || { docker logs warehouse; exit 1; }; sleep 2; done
           grep -q '"installed":true' /tmp/status.json
           docker exec -u www-data warehouse php occ config:app:set --value=1 --type=boolean user_oidc allow_insecure_http
       - name: Verify real WebDAV, personal quotas and shared capacity
@@ -57,3 +57,4 @@ jobs:
           docker exec warehouse tail -c 20000 /var/www/html/data/nextcloud.log || true
           cat /tmp/identity.log || true
           cat /tmp/put.txt /tmp/full.txt /tmp/plus.txt /tmp/plus-full.txt /tmp/global-full.txt || true
+
