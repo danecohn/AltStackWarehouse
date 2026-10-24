@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 : "${ALTSTACK_ORIGIN:?}" "${OFFICE_ORIGIN:?}" "${WAREHOUSE_ORIGIN:?}" "${WAREHOUSE_OIDC_SECRET:?}" "${WAREHOUSE_SERVICE_SECRET:?}"
-occ() { runuser -u www-data -- php /var/www/html/occ "$@"; }
+occ() { php /var/www/html/occ "$@"; }
 cp -R /opt/altstack/user_oidc /var/www/html/custom_apps/
 cp -R /opt/altstack/warehouse/altstack /var/www/html/custom_apps/
 cp /opt/altstack/warehouse/altstack.config.php /var/www/html/config/altstack.config.php
@@ -25,5 +25,5 @@ occ config:app:set theming footer --value='AltStack LLC · Based on Nextcloud ·
 # Preserve upstream legal notices and the installed apps' AGPL source links.
 occ background:cron
 # Nextcloud cleanup/expiry work must run alongside Apache in this single-volume service.
-(while :; do runuser -u www-data -- php -f /var/www/html/cron.php || echo 'Warehouse background task failed' >&2; sleep 300; done) &
+(while :; do php -f /var/www/html/cron.php || echo 'Warehouse background task failed' >&2; sleep 300; done) &
 
