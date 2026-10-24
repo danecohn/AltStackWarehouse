@@ -31,6 +31,8 @@ jobs:
           for attempt in $(seq 1 120); do curl --max-time 5 -fsS http://127.0.0.1/status.php -o /tmp/status.json && grep -q '"installed":true' /tmp/status.json && break; test "$(docker inspect -f '{{.State.Running}}' warehouse)" = true || { docker logs warehouse; exit 1; }; sleep 2; done
           grep -q '"installed":true' /tmp/status.json
           docker exec -u www-data warehouse php occ config:app:set --value=1 --type=boolean user_oidc allow_insecure_http
+      - name: Verify browser account authorization through Nextcloud
+        run: node test/browser-login.mjs
       - name: Verify real WebDAV, personal quotas and shared capacity
         run: |
           TOKEN=$(curl -fsS http://127.0.0.1:3100/fixture/token | jq -r .token)
