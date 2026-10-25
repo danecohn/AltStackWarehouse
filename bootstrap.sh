@@ -22,7 +22,7 @@ occ config:system:set default_language --value=en
 occ config:system:set skeletondirectory --value=''
 occ config:system:set htaccess.RewriteBase --value=/
 occ maintenance:update:htaccess
-occ theming:config name 'AltStack Warehouse'
+occ theming:config name 'Artemis Drive'
 occ theming:config url "$ALTSTACK_ORIGIN"
 occ theming:config slogan 'Your files. Your stack. Everywhere.'
 occ theming:config color '#3569a4'

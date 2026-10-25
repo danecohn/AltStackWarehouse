@@ -17,5 +17,5 @@ RUN mkdir -p /opt/altstack/health \
 COPY assets/logo.svg /opt/altstack/logo.svg
 RUN mkdir -p /docker-entrypoint-hooks.d/before-starting; cp /opt/altstack/warehouse/bootstrap.sh /docker-entrypoint-hooks.d/before-starting/altstack.sh; chmod 755 /docker-entrypoint-hooks.d/before-starting/altstack.sh
 ENV NEXTCLOUD_DATA_DIR=/var/www/html/data PHP_MEMORY_LIMIT=512M PHP_UPLOAD_LIMIT=512M APACHE_BODY_LIMIT=536870912
-LABEL org.opencontainers.image.title="AltStack Warehouse" org.opencontainers.image.licenses="AGPL-3.0-or-later" org.opencontainers.image.source="https://github.com/danecohn/AltStackWarehouse"
+LABEL org.opencontainers.image.title="Artemis Drive" org.opencontainers.image.licenses="AGPL-3.0-or-later" org.opencontainers.image.source="https://github.com/danecohn/AltStackWarehouse"
 EXPOSE 80
