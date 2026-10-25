@@ -1,5 +1,14 @@
 # AltStack Warehouse
 
+<!-- artemis-publisher:start -->
+<img src="brand/artemis/artemis-wordmark.svg" alt="Artemis Softworks LLC" width="340">
+
+**A product of Artemis Softworks LLC.** Founded by **Demetria Althea Cohn**.
+
+Companion software for macOS, thoughtfully available for Windows and Linux. See the [Artemis identity and design system](brand/artemis/BRAND.md). Platform availability varies by product and release.
+<!-- artemis-publisher:end -->
+
+
 Modified distribution of Nextcloud 33.0.10 and the official user_oidc 8.9.0 app, pinned by container/archive SHA-256. The bundled `altstack` integration is AGPL-3.0-or-later. Nextcloud/user_oidc retain their original licenses, copyright notices and source links. Modified source is published with this service.
 
 Warehouse is the canonical cloud file store. Office reads/writes the same files through authenticated WebDAV with short-lived, signed AltStack account credentials. Free accounts share 2,000,000,000 bytes across applications; Plus accounts share 8,000,000,000 bytes. Office history snapshots in `AltOffice/.history` count in this allowance. Opening an existing Warehouse document does not copy it. Existing Office files and versions are checksum-verified during migration; originals remain for rollback.

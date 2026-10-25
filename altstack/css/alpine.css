@@ -5,3 +5,6 @@
 #content{background:linear-gradient(135deg,#dde8f3,#edf1f7 45%,#d5e2f1)}.app-navigation{background:#ecf0f6e8!important;border-right:1px solid #bdc8d5!important}.app-content{background:#ffffffed!important}
 .button-vue--vue-primary,button.primary{background:linear-gradient(#679ed4,#3569a4)!important;box-shadow:0 1px 0 #ffffffb0 inset;border:1px solid #2c5683!important}
 @media(max-width:700px){#header{min-height:52px}#content{border-radius:0}.app-navigation{max-width:88vw}}
+
+/* Artemis Softworks LLC · Moonrise */
+:root{--color-primary:#526e7b;--color-primary-element:#526e7b;--color-main-background:#f5f0e6;--color-main-text:#273941;--color-background-hover:#dce8e5}#content{background:linear-gradient(135deg,#e2e9df,#f5f0e6 55%,#cbdcda)}#header{background:linear-gradient(#fffaf0,#dce5df)!important}.app-navigation{background:#edf0e6eb!important}.button-vue--vue-primary,button.primary{background:linear-gradient(#718e96,#526e7b)!important;border-color:#526e7b!important}

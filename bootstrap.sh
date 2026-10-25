@@ -28,7 +28,7 @@ occ theming:config slogan 'Your files. Your stack. Everywhere.'
 occ theming:config color '#3569a4'
 occ theming:config logo /opt/altstack/logo.svg
 occ theming:config background backgroundColor
-occ config:app:set theming footer --value='AltStack LLC · Based on Nextcloud · Open source'
+occ config:app:set theming footer --value='Artemis Softworks LLC · Based on Nextcloud · Open source'
 # Preserve upstream legal notices and the installed apps' AGPL source links.
 occ background:cron
 # Nextcloud cleanup/expiry work must run alongside Apache in this single-volume service.
