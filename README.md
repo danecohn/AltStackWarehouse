@@ -1,11 +1,11 @@
-# Artemis Drive
+# Cohnsoft Drive
 
 <!-- artemis-publisher:start -->
-<img src="brand/artemis/artemis-wordmark.svg" alt="Artemis Softworks LLC" width="340">
+<img src="altstack/css/cohnsoft/logos/mark/cohnsoft-mark.svg" alt="Cohnsoft" width="340">
 
-**A product of Artemis Softworks LLC.** Founded by **Demetria Althea Cohn**.
+**A product of Cohnsoft.** Founded by **Demetria Althea Cohn**.
 
-Companion software for macOS, thoughtfully available for Windows and Linux. See the [Artemis identity and design system](brand/artemis/BRAND.md). Platform availability varies by product and release.
+Companion software for macOS, thoughtfully available for Windows and Linux. See the [Cohnsoft identity and design system](altstack/css/cohnsoft/BRAND.md). Platform availability varies by product and release.
 <!-- artemis-publisher:end -->
 
 
