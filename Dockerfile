@@ -9,6 +9,8 @@ RUN a2dismod mpm_event mpm_worker && a2enmod mpm_prefork \
  && apache2ctl -t
 RUN set -eux; curl -fL --retry 3 -o /tmp/user_oidc.tar.gz https://github.com/nextcloud-releases/user_oidc/releases/download/v8.9.0/user_oidc-v8.9.0.tar.gz; echo 'e3f8bc89d07e87993a805eab774b49a14c6b732edf5c9f705df2389596ab9e71  /tmp/user_oidc.tar.gz' | sha256sum -c -; mkdir -p /opt/altstack; tar -xzf /tmp/user_oidc.tar.gz -C /opt/altstack; rm /tmp/user_oidc.tar.gz
 COPY . /opt/altstack/warehouse/
+# Content-address the owned bridge stylesheet so existing Nextcloud clients fetch each update.
+RUN php -r '$p="/opt/altstack/warehouse/altstack/css/vigiltech-drive.css"; copy($p, dirname($p)."/vigiltech-drive-".substr(hash_file("sha256",$p),0,12).".css");' 
 # Serve readiness outside Nextcloud's front-controller rewrite rules.
 RUN mkdir -p /opt/altstack/health \
  && printf '%s\n' '<?php require "/var/www/html/status.php";' > /opt/altstack/health/index.php \
