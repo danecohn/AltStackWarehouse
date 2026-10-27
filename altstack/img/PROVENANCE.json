@@ -1,0 +1,36 @@
+{
+  "repository": "https://github.com/danecohn/vigilicons",
+  "commit": "41f4ba10777880a6929e593638efbe86f8e2a64c",
+  "files": [
+    {
+      "path": "navigation-desktop.png",
+      "source": "products/vigiltech/desktop/vigiltech-64.png",
+      "sha256": "3929893c7e98ac233f3fca36fd98752acfd09612705ea7a947d7c8980481e301"
+    },
+    {
+      "path": "navigation-office.png",
+      "source": "products/office/desktop/office-64.png",
+      "sha256": "707e38b8988e287626fe23ff16f20ea8e097404a273eba4f22cf7dfaefb63b03"
+    },
+    {
+      "path": "navigation-search.png",
+      "source": "products/search/desktop/search-64.png",
+      "sha256": "ecab172c0d36012c15bd5a1b12c6a6e1f640c97a8c7fb72ad8639a149145bf1e"
+    },
+    {
+      "path": "navigation-mail.png",
+      "source": "products/mail/desktop/mail-64.png",
+      "sha256": "34f14316f850c1e0ecc424d8f75c569b74f4bba5c1fd6678c2f61a0a55aedb8a"
+    },
+    {
+      "path": "navigation-calendar.png",
+      "source": "products/calendar/desktop/calendar-64.png",
+      "sha256": "e4851245f8a3ba57b0b0889763ef739915146d3a903456bcd2f02ce6710a4210"
+    },
+    {
+      "path": "navigation-social.png",
+      "source": "products/social/desktop/social-64.png",
+      "sha256": "d0bd5ddedc7e1578ff19194835755e6dafc840714e50df3c8ae25d1b7863dd88"
+    }
+  ]
+}
