@@ -23,6 +23,9 @@ jobs:
         run: |
           docker build -t altstack-warehouse .
           docker run --rm --entrypoint sh altstack-warehouse -c 'find /opt/altstack/warehouse/altstack -name "*.php" -exec php -l {} \;'
+      - name: Verify canonical proxy webroot and legacy compatibility
+        run: |
+          docker run --rm --entrypoint php -e WAREHOUSE_ORIGIN=https://altstackwarehouse-production.up.railway.app altstack-warehouse -r 'require "/opt/altstack/warehouse/altstack.config.php"; if ($CONFIG["overwritehost"] !== "altstackwarehouse-production.up.railway.app" || $CONFIG["overwritewebroot"] !== "") exit(1); $_SERVER["HTTP_X_VIGIL_SUITE_PATH"]="/drive"; require "/opt/altstack/warehouse/altstack.config.php"; if ($CONFIG["overwritehost"] !== "vigiltech.org" || $CONFIG["overwritewebroot"] !== "/drive" || $CONFIG["trusted_domains"] !== ["vigiltech.org"]) exit(1);'
       - name: Start real OIDC authority and storage dependencies
         run: |
           cd test/identity
