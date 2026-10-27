@@ -34,7 +34,7 @@ html:root:not(#vigil) {
   --primary-invert-if-bright: no; --primary-invert-if-dark: no; --background-invert-if-dark: no; --background-invert-if-bright: no;
 }
 
-body, input, button, select, textarea { font-family: var(--vt-font) !important; }
+body, input, button, select, textarea { font-family: var(--font-face, var(--vt-font)) !important; }
 a:not(.button, .button-vue, [class*="app-menu"], [class*="app-navigation"], [class*="files-list"]) { color: var(--vt-tint-strong); text-underline-offset: 3px; }
 :focus-visible { outline: 3px solid var(--vt-tint-strong) !important; outline-offset: 3px; box-shadow: none; }
 progress, input[type="checkbox"], input[type="radio"], input[type="range"] { accent-color: var(--vt-pink-600); }
