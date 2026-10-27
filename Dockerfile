@@ -14,8 +14,9 @@ RUN mkdir -p /opt/altstack/health \
  && printf '%s\n' '<?php require "/var/www/html/status.php";' > /opt/altstack/health/index.php \
  && printf '%s\n' 'Alias /healthz/ /opt/altstack/health/' '<Directory /opt/altstack/health>' 'Require all granted' 'AllowOverride None' 'DirectoryIndex index.php' '</Directory>' > /etc/apache2/conf-enabled/altstack-health.conf \
  && apache2ctl -t
-COPY assets/logo.svg /opt/altstack/logo.svg
+COPY assets/logo.png /opt/altstack/logo.png
+COPY assets/icons/favicon-32.png /opt/altstack/favicon.png
 RUN mkdir -p /docker-entrypoint-hooks.d/before-starting; cp /opt/altstack/warehouse/bootstrap.sh /docker-entrypoint-hooks.d/before-starting/altstack.sh; chmod 755 /docker-entrypoint-hooks.d/before-starting/altstack.sh
 ENV NEXTCLOUD_DATA_DIR=/var/www/html/data PHP_MEMORY_LIMIT=512M PHP_UPLOAD_LIMIT=512M APACHE_BODY_LIMIT=536870912
-LABEL org.opencontainers.image.title="Cohnsoft Drive" org.opencontainers.image.licenses="AGPL-3.0-or-later" org.opencontainers.image.source="https://github.com/danecohn/AltStackWarehouse"
+LABEL org.opencontainers.image.title="Vigil Drive" org.opencontainers.image.licenses="AGPL-3.0-or-later" org.opencontainers.image.source="https://github.com/danecohn/AltStackWarehouse"
 EXPOSE 80

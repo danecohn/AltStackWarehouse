@@ -1,17 +1,17 @@
-# Cohnsoft Drive
+# Vigil Drive
 
 <!-- artemis-publisher:start -->
-<img src="altstack/css/cohnsoft/logos/mark/cohnsoft-mark.svg" alt="Cohnsoft" width="340">
+<img src="altstack/css/vigiltech/logos/mark/vigiltech-mark.svg" alt="VigilTech" width="340">
 
-**A product of Cohnsoft.** Founded by **Demetria Althea Cohn**.
+**A product of VigilTech, vigiltech.org.** Founded by **Demetria Althea Cohn**.
 
-Companion software for macOS, thoughtfully available for Windows and Linux. See the [Cohnsoft identity and design system](altstack/css/cohnsoft/BRAND.md). Platform availability varies by product and release.
+Companion software for macOS, thoughtfully available for Windows and Linux. See the [VigilTech identity and design system](altstack/css/vigiltech/BRAND.md). Platform availability varies by product and release.
 <!-- artemis-publisher:end -->
 
 
 Modified distribution of Nextcloud 33.0.10 and the official user_oidc 8.9.0 app, pinned by container/archive SHA-256. The bundled `altstack` integration is AGPL-3.0-or-later. Nextcloud/user_oidc retain their original licenses, copyright notices and source links. Modified source is published with this service.
 
-Warehouse is the canonical cloud file store. Office reads/writes the same files through authenticated WebDAV with short-lived, signed AltStack account credentials. Free accounts share 2,000,000,000 bytes across applications; Plus accounts share 8,000,000,000 bytes. Office history snapshots in `AltOffice/.history` count in this allowance. Opening an existing Warehouse document does not copy it. Existing Office files and versions are checksum-verified during migration; originals remain for rollback.
+Vigil Drive is the canonical cloud file store. Vigil Office reads/writes the same files through authenticated WebDAV with short-lived, signed VigilTech account credentials. Free accounts share 2,000,000,000 bytes across applications; Plus accounts share 8,000,000,000 bytes. Office history snapshots in `AltOffice/.history` count in this allowance. Opening an existing Warehouse document does not copy it. Existing Office files and versions are checksum-verified during migration; originals remain for rollback.
 
 The global live-file budget is 128,000,000,000 bytes on a 150 GB persistent volume. Each owner files root is counted once; shared views do not create another allocation. A persistent-volume write mutex serializes HTTP mutations through file-cache commit. It deliberately favors correct small-instance quotas over concurrent upload throughput. Nextcloud's normal personal quota remains enabled as well. Quotas refresh from the billing authority, including downgrades; unavailable entitlements block new writes. Trash, versions, databases, and temporary upload chunks need physical headroom beyond the live-file budget.
 

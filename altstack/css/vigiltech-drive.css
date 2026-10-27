@@ -1,0 +1,123 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later
+   Vigil Drive: VigilTech skin for the Nextcloud web interface.
+   Maps Nextcloud's own --color-* variables onto the shared --vt-* tokens (vigiltech/css/goldengate.css), then adds a few
+   structural overrides (glass header and sidebar, rounded content sheet, wallpaper login). Layout, components and
+   accessibility behaviour stay Nextcloud's.
+   Every text/background pair below is at least 4.5:1 in light and dark, including hover, active, focus, selected and
+   disabled states (checked by test/preview/audit.js against test/preview/index.html). */
+
+/* Status colours that goldengate.css does not define. */
+:root { --vtd-ok: #1d6b32; --vtd-ok-soft: #e3f4e8; --vtd-warn: #8a4300; --vtd-warn-soft: #fff0dc; --vtd-bad: #a3001b; --vtd-bad-soft: #fde8ed; --vtd-info-soft: #e5effa; --vtd-scrim: rgba(23, 16, 26, .55); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --vtd-ok: #7be09a; --vtd-ok-soft: #14301f; --vtd-warn: #ffb066; --vtd-warn-soft: #36240c; --vtd-bad: #ff8a9c; --vtd-bad-soft: #3b1621; --vtd-info-soft: #14283d; --vtd-scrim: rgba(8, 3, 10, .7); } }
+:root[data-theme="dark"] { --vtd-ok: #7be09a; --vtd-ok-soft: #14301f; --vtd-warn: #ffb066; --vtd-warn-soft: #36240c; --vtd-bad: #ff8a9c; --vtd-bad-soft: #3b1621; --vtd-info-soft: #14283d; --vtd-scrim: rgba(8, 3, 10, .7); }
+
+/* Nextcloud variables. The :not(#id) raises specificity above the stock theme sheets without !important. */
+html:root:not(#vigil) {
+  --font-face: var(--vt-font); --default-font-size: 15px;
+  --color-main-background: var(--vt-surface); --color-main-background-translucent: var(--vt-glass); --color-main-background-blur: var(--vt-surface);
+  --color-main-text: var(--vt-label); --color-text-light: var(--vt-label); --color-text-lighter: var(--vt-label-2);
+  --color-text-maxcontrast: var(--vt-label-2); --color-text-maxcontrast-default: var(--vt-label-2); --color-text-maxcontrast-background-blur: var(--vt-label-2);
+  --color-background-plain: var(--vt-bg); --color-background-plain-text: var(--vt-label);
+  --color-background-hover: var(--vt-fill); --color-background-dark: var(--vt-fill); --color-background-darker: var(--vt-fill-2);
+  --color-border: var(--vt-separator); --color-border-dark: var(--vt-separator); --color-border-maxcontrast: var(--vt-label-2);
+  --color-primary: var(--vt-pink-600); --color-primary-element: var(--vt-pink-600); --color-primary-element-hover: var(--vt-pink-700);
+  --color-primary-text: #ffffff; --color-primary-element-text: #ffffff; --color-primary-element-text-dark: #ffffff; --color-primary-hover: var(--vt-pink-700);
+  --color-primary-light: var(--vt-tint-soft); --color-primary-element-light: var(--vt-tint-soft); --color-primary-light-text: var(--vt-tint-strong);
+  --color-primary-element-light-text: var(--vt-tint-strong); --color-primary-element-light-hover: var(--vt-fill-2); --color-primary-light-hover: var(--vt-fill-2);
+  --color-element-info: var(--vt-info); --color-info: var(--vt-info); --color-info-text: var(--vt-info); --color-info-hover: var(--vtd-info-soft);
+  --color-error: var(--vtd-bad); --color-error-text: var(--vtd-bad); --color-error-hover: var(--vtd-bad-soft); --color-element-error: var(--vtd-bad);
+  --color-warning: var(--vtd-warn); --color-warning-text: var(--vtd-warn); --color-warning-hover: var(--vtd-warn-soft); --color-element-warning: var(--vtd-warn);
+  --color-success: var(--vtd-ok); --color-success-text: var(--vtd-ok); --color-success-hover: var(--vtd-ok-soft); --color-element-success: var(--vtd-ok);
+  --color-box-shadow: rgba(30, 6, 22, .25); --color-box-shadow-rgb: 30, 6, 22; --color-scrollbar: var(--vt-fill-2);
+  --color-loading-light: var(--vt-fill); --color-loading-dark: var(--vt-fill-2);
+  --border-radius: 8px; --border-radius-small: 6px; --border-radius-element: 8px; --border-radius-large: 12px; --border-radius-container: 12px; --border-radius-container-large: 22px; --border-radius-pill: 99px;
+  --primary-invert-if-bright: no; --primary-invert-if-dark: no; --background-invert-if-dark: no; --background-invert-if-bright: no;
+}
+
+body, input, button, select, textarea { font-family: var(--vt-font) !important; }
+a:not(.button, .button-vue, [class*="app-menu"], [class*="app-navigation"], [class*="files-list"]) { color: var(--vt-tint-strong); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--vt-tint-strong) !important; outline-offset: 3px; box-shadow: none; }
+::selection { background: var(--vt-tint-soft); color: var(--vt-label); }
+
+/* Signed-in pages: wallpaper behind a frosted header and sidebar; the content sheet itself is a solid surface. */
+body#body-user, body#body-settings { background: var(--vt-wallpaper) fixed, var(--vt-bg) !important; color: var(--vt-label); }
+#header {
+  background: var(--vt-glass) !important; color: var(--vt-label) !important; border-bottom: 1px solid var(--vt-separator);
+  box-shadow: inset 0 1px 0 var(--vt-glass-edge), var(--vt-shadow-1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6);
+}
+#header .header-start, #header .header-end, #header .header-left, #header .header-right, #header .app-menu-entry__name, #header .header-appname, #header a { color: var(--vt-label) !important; }
+#header .app-menu-entry a, #header .app-menu-entry { border-radius: var(--vt-r-control); }
+#header .app-menu-entry:hover, #header .app-menu-entry a:hover { background: var(--vt-fill); color: var(--vt-label) !important; }
+#header .app-menu-entry--active, #header .app-menu-entry.app-menu-entry--active { background: var(--vt-tint-soft); color: var(--vt-tint-strong) !important; }
+#header .app-menu-entry--active .app-menu-entry__name { color: var(--vt-tint-strong) !important; }
+
+#content, #content-vue { background: transparent !important; }
+.app-navigation { background: var(--vt-glass) !important; color: var(--vt-label) !important; border-right: 1px solid var(--vt-separator) !important; -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6); }
+.app-navigation .app-navigation-entry > a, .app-navigation .app-navigation-entry__name, .app-navigation .app-navigation-caption { color: var(--vt-label); }
+.app-navigation .app-navigation-caption { color: var(--vt-label-2); }
+.app-navigation .app-navigation-entry:hover > a, .app-navigation .app-navigation-entry:focus-within > a { background: var(--vt-fill); color: var(--vt-label); }
+.app-navigation .app-navigation-entry.active > a, .app-navigation .app-navigation-entry--active > a, .app-navigation .app-navigation-entry > a[aria-current="page"] { background: var(--vt-tint-soft); color: var(--vt-tint-strong); font-weight: 600; }
+.app-content { background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: var(--vt-r-sheet); box-shadow: var(--vt-shadow-1), 0 0 0 1px var(--vt-separator); }
+
+/* File list */
+.files-list__row { color: var(--vt-label); background: var(--vt-surface); }
+.files-list__row:hover, .files-list__row:focus-within { background: var(--vt-fill); color: var(--vt-label); }
+.files-list__row--active, .files-list__row[data-selected="true"], .files-list__row.files-list__row--selected { background: var(--vt-tint-soft); color: var(--vt-label); }
+.files-list__row .files-list__row-name-text, .files-list__row .files-list__row-name-ext { color: var(--vt-label); }
+.files-list__row .files-list__row-size, .files-list__row .files-list__row-mtime, .files-list__row .files-list__column-sort-button, .files-list__row .files-list__row-column-custom { color: var(--vt-label-2); }
+.files-list__header, .files-list__thead { background: var(--vt-surface); color: var(--vt-label-2); }
+
+/* Buttons: text and fill are always set together, so no state can hide the label. */
+.button-vue, button.button-vue { color: var(--vt-label); background: var(--vt-fill); border-radius: var(--vt-r-control); font-weight: 600; }
+.button-vue:hover:not(:disabled), .button-vue:active:not(:disabled) { background: var(--vt-fill-2); color: var(--vt-label); }
+.button-vue--vue-primary, .button-vue--primary, .button-vue--variant-primary, button.primary, a.button.primary, input[type="submit"].primary {
+  background: var(--vt-pink-600) !important; color: #ffffff !important; border: 1px solid var(--vt-pink-700) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 190, 215, .45), 0 1px 3px rgba(61, 0, 22, .35);
+}
+.button-vue--vue-primary:hover:not(:disabled), .button-vue--primary:hover:not(:disabled), .button-vue--variant-primary:hover:not(:disabled), button.primary:hover:not(:disabled), a.button.primary:hover { background: var(--vt-pink-700) !important; color: #ffffff !important; }
+.button-vue--vue-primary:active:not(:disabled), .button-vue--primary:active:not(:disabled), .button-vue--variant-primary:active:not(:disabled), button.primary:active:not(:disabled) { background: var(--vt-pink-800) !important; color: #ffffff !important; }
+.button-vue--vue-secondary, .button-vue--secondary, .button-vue--variant-secondary { background: var(--vt-tint-soft); color: var(--vt-tint-strong); }
+.button-vue--vue-tertiary, .button-vue--tertiary, .button-vue--variant-tertiary { background: transparent; color: var(--vt-label); }
+.button-vue--vue-tertiary:hover:not(:disabled), .button-vue--tertiary:hover:not(:disabled), .button-vue--variant-tertiary:hover:not(:disabled) { background: var(--vt-fill); color: var(--vt-label); }
+.button-vue:disabled, button:disabled, .button-vue[aria-disabled="true"], .button-vue--vue-primary:disabled, .button-vue--primary:disabled, button.primary:disabled {
+  opacity: 1 !important; background: var(--vt-fill) !important; color: var(--vt-label-2) !important; border-color: transparent !important; box-shadow: none !important; cursor: not-allowed;
+}
+
+/* Fields */
+input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]), textarea, select, .input-field__input {
+  background: var(--vt-surface); color: var(--vt-label); border: 1px solid var(--vt-label-2); border-radius: var(--vt-r-control);
+}
+input::placeholder, textarea::placeholder { color: var(--vt-label-2); opacity: 1; }
+input:not([type="checkbox"], [type="radio"]):focus, textarea:focus, select:focus { border-color: var(--vt-tint-strong); box-shadow: var(--vt-focus); }
+input:disabled, textarea:disabled, select:disabled { background: var(--vt-fill); color: var(--vt-label-2); opacity: 1; }
+
+/* Sidebar, dialogs, menus */
+.app-sidebar { background: var(--vt-surface-2) !important; color: var(--vt-label) !important; border-left: 1px solid var(--vt-separator) !important; }
+.app-sidebar-tabs__tab[aria-selected="true"], .app-sidebar-tabs__tab.active { color: var(--vt-tint-strong); box-shadow: inset 0 -3px 0 var(--vt-tint-strong); }
+.app-sidebar-tabs__tab { color: var(--vt-label-2); }
+.app-sidebar-tabs__tab:hover { color: var(--vt-label); background: var(--vt-fill); }
+.modal-mask { background: var(--vtd-scrim) !important; }
+.modal-container, .nc-dialog, .dialog { background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: var(--vt-r-sheet) !important; box-shadow: var(--vt-shadow-2), inset 0 1px 0 var(--vt-glass-edge) !important; }
+.modal-header, .dialog__name { color: var(--vt-label); font-weight: 700; }
+.v-popper__inner, .action-item__popoverContainer, .popover__inner { background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: var(--vt-r-group); box-shadow: var(--vt-shadow-2), 0 0 0 1px var(--vt-separator); }
+.action-button:hover, .action-button:focus-within { background: var(--vt-fill); color: var(--vt-label); }
+.toast-info, .toast-success, .toast-error, .toastify { background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: var(--vt-r-group); box-shadow: var(--vt-shadow-2), 0 0 0 1px var(--vt-separator); }
+
+/* Login: wallpaper with a solid sheet, so no text sits directly on the image. */
+body#body-login { background: var(--vt-wallpaper) fixed, var(--vt-bg) !important; color: var(--vt-label); }
+#body-login .login-box, #body-login .guest-box, #body-login .wrapper > main, #body-login form.login-form, #body-login .login-form {
+  background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: var(--vt-r-sheet) !important; box-shadow: var(--vt-shadow-2), inset 0 1px 0 var(--vt-glass-edge) !important;
+}
+#body-login h1, #body-login h2, #body-login .login-box label, #body-login .guest-box p { color: var(--vt-label); }
+#body-login footer, #body-login #contentinfo, #body-login .footer {
+  display: block; width: fit-content; max-width: 92vw; margin: 12px auto 0; padding: 6px 14px; background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: 99px; box-shadow: 0 0 0 1px var(--vt-separator);
+}
+#body-login footer a, #body-login #contentinfo a, #body-login .footer a { color: var(--vt-tint-strong) !important; }
+#body-login a.button, #body-login .login-box a[href*="user_oidc"] { background: var(--vt-pink-600); color: #ffffff; border-radius: var(--vt-r-control); font-weight: 600; }
+#body-login a.button:hover, #body-login .login-box a[href*="user_oidc"]:hover { background: var(--vt-pink-700); color: #ffffff; }
+
+@media (max-width: 700px) { #header { min-height: 52px; } .app-navigation { max-width: 88vw; } .app-content { border-radius: 0; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
+@media (prefers-reduced-transparency: reduce) { #header, .app-navigation { background: var(--vt-surface) !important; -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media (forced-colors: active) { :focus-visible { outline-color: Highlight !important; } .button-vue, button, input { border: 1px solid ButtonText !important; } }

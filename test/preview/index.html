@@ -1,0 +1,73 @@
+<!doctype html><html lang="en"><head><title>Vigil Drive preview: files</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="../../assets/icons/favicon.ico">
+<link rel="stylesheet" href="nc-base.css">
+<link rel="stylesheet" href="../../altstack/css/vigiltech/css/vigilsans.css">
+<link rel="stylesheet" href="../../altstack/css/vigiltech/css/goldengate.css">
+<link rel="stylesheet" href="../../altstack/css/vigiltech-drive.css">
+</head><body id="body-user">
+<!-- PREVIEW ONLY: static stand-in for Nextcloud's Files app. Not Nextcloud. -->
+<header id="header">
+ <div class="header-start"><a href="#"><img src="../../assets/icons/favicon-32.png" alt="Vigil Drive"></a>
+  <ul class="app-menu">
+   <li class="app-menu-entry app-menu-entry--active"><a href="#"><span class="app-menu-entry__name">Files</span></a></li>
+   <li class="app-menu-entry"><a href="#"><span class="app-menu-entry__name">Vigil Office</span></a></li>
+   <li class="app-menu-entry"><a href="#"><span class="app-menu-entry__name">Vigil Mail</span></a></li>
+   <li class="app-menu-entry"><a href="#"><span class="app-menu-entry__name">Vigil Search</span></a></li>
+  </ul></div>
+ <div class="header-end"><button class="button-vue button-vue--tertiary" type="button">Search</button><button class="button-vue button-vue--tertiary" type="button">Eva</button></div>
+</header>
+<div id="content-vue">
+ <nav class="app-navigation" aria-label="Files">
+  <ul>
+   <li class="app-navigation-entry active"><a href="#" aria-current="page"><span class="app-navigation-entry__name">All files</span></a></li>
+   <li class="app-navigation-entry"><a href="#"><span class="app-navigation-entry__name">Recent</span></a></li>
+   <li class="app-navigation-entry"><a href="#"><span class="app-navigation-entry__name">Favorites</span></a></li>
+   <li class="app-navigation-entry"><a href="#"><span class="app-navigation-entry__name">Shares</span></a></li>
+   <li class="app-navigation-entry"><a href="#"><span class="app-navigation-entry__name">Deleted files</span></a></li>
+   <li class="app-navigation-caption">Tags</li>
+   <li class="app-navigation-entry"><a href="#"><span class="app-navigation-entry__name">Work</span></a></li>
+  </ul>
+  <div class="quota"><div>1.2 GB of 2 GB used</div><progress value="60" max="100"></progress></div>
+ </nav>
+ <main class="app-content">
+  <div class="app-content-toolbar">
+   <div class="breadcrumbs">All files / Projects</div>
+   <button class="button-vue button-vue--primary" type="button">New</button>
+   <button class="button-vue button-vue--secondary" type="button">Upload</button>
+   <button class="button-vue button-vue--tertiary" type="button">View</button>
+   <button class="button-vue button-vue--primary" type="button" disabled>Share</button>
+  </div>
+  <table class="files-list">
+   <thead class="files-list__thead"><tr class="files-list__header"><th>Name</th><th>Size</th><th>Modified</th></tr></thead>
+   <tbody>
+    <tr class="files-list__row"><td><span class="files-list__row-name-text">Budget</span><span class="files-list__row-name-ext">.xlsx</span></td><td class="files-list__row-size">84 KB</td><td class="files-list__row-mtime">Today</td></tr>
+    <tr class="files-list__row files-list__row--active"><td><span class="files-list__row-name-text">Trip notes</span><span class="files-list__row-name-ext">.md</span></td><td class="files-list__row-size">3 KB</td><td class="files-list__row-mtime">Yesterday</td></tr>
+    <tr class="files-list__row" data-selected="true"><td><span class="files-list__row-name-text">Photos</span></td><td class="files-list__row-size">212 MB</td><td class="files-list__row-mtime">Last week</td></tr>
+    <tr class="files-list__row"><td><span class="files-list__row-name-text">Contract</span><span class="files-list__row-name-ext">.pdf</span></td><td class="files-list__row-size">1.4 MB</td><td class="files-list__row-mtime">Oct 12</td></tr>
+   </tbody>
+  </table>
+  <div class="surface-band">
+   <span class="v-popper__inner"><ul><li class="action-button">Rename</li><li class="action-button">Move or copy</li><li class="action-button">Details</li></ul></span>
+   <span class="toastify toast-success">File uploaded</span><span class="toastify toast-error">Upload failed: not enough space</span>
+  </div>
+  <div class="modal-mask"><div class="modal-container dialog" role="dialog" aria-labelledby="dlg">
+   <h2 class="modal-header dialog__name" id="dlg">Rename file</h2>
+   <p>Choose a new name for Trip notes.md.</p>
+   <div class="field"><label for="nm">Name</label><input id="nm" value="Trip notes.md"></div>
+   <div class="field"><label for="nm2">Disabled field</label><input id="nm2" value="Locked" disabled></div>
+   <div class="dialog__buttons"><button class="button-vue button-vue--tertiary" type="button">Cancel</button><button class="button-vue button-vue--primary" type="button">Rename</button></div>
+  </div></div>
+ </main>
+ <aside class="app-sidebar" aria-label="Details">
+  <h2>Trip notes.md</h2><p class="files-list__row-size" style="color:var(--color-text-maxcontrast)">3 KB, modified yesterday</p>
+  <div class="app-sidebar-tabs" role="tablist"><button class="app-sidebar-tabs__tab" role="tab" aria-selected="true">Sharing</button><button class="app-sidebar-tabs__tab" role="tab" aria-selected="false">Activity</button><button class="app-sidebar-tabs__tab" role="tab" aria-selected="false">Versions</button></div>
+  <div class="field"><label for="sh">Share with</label><input id="sh" placeholder="Name or email"></div>
+  <label><input type="checkbox" checked> Allow editing</label>
+  <p><a href="#">Copy public link</a></p>
+  <p style="color:var(--color-error-text)">Link expired.</p><p style="color:var(--color-success-text)">Saved.</p><p style="color:var(--color-warning-text)">Almost out of space.</p>
+ </aside>
+</div>
+<script src="../../altstack/js/vigiltech.js"></script>
+<script src="audit.js"></script>
+</body></html>

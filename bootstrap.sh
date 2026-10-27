@@ -22,13 +22,14 @@ occ config:system:set default_language --value=en
 occ config:system:set skeletondirectory --value=''
 occ config:system:set htaccess.RewriteBase --value=/
 occ maintenance:update:htaccess
-occ theming:config name 'Cohnsoft Drive'
+occ theming:config name 'Vigil Drive'
 occ theming:config url "$ALTSTACK_ORIGIN"
-occ theming:config slogan 'Your files. Your stack. Everywhere.'
-occ theming:config color '#0a7a37'
-occ theming:config logo /opt/altstack/logo.svg
+occ theming:config slogan 'Files for your VigilTech account'
+occ theming:config color '#d6004a'
+occ theming:config logo /opt/altstack/logo.png
+occ theming:config favicon /opt/altstack/favicon.png
 occ theming:config background backgroundColor
-occ config:app:set theming footer --value='A product of Cohnsoft. · Based on Nextcloud · Open source'
+occ config:app:set theming footer --value='A product of VigilTech, vigiltech.org. · Based on Nextcloud · Open source'
 # Preserve upstream legal notices and the installed apps' AGPL source links.
 occ background:cron
 # Nextcloud cleanup/expiry work must run alongside Apache in this single-volume service.

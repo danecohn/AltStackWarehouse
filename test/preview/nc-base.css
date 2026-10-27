@@ -1,0 +1,50 @@
+/* PREVIEW ONLY. A rough stand-in for Nextcloud's own stylesheet: stock blue theme variables and layout, using the
+   class names Nextcloud's components use. The Vigil skin (altstack/css/vigiltech-drive.css) is loaded after this file. */
+:root { --color-main-background:#fff; --color-main-text:#222; --color-text-maxcontrast:#6b6b6b; --color-primary-element:#00679e; --color-primary-element-text:#fff;
+  --color-background-hover:#f5f5f5; --color-border:#ededed; --font-face:system-ui,sans-serif; --border-radius-large:12px; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: var(--color-main-text); background: #00679e; min-height: 100vh; }
+a { color: #00679e; }
+#header { position: sticky; top: 0; height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #00679e; color: #fff; z-index: 5; }
+#header a { color: #fff; text-decoration: none; }
+.header-start, .header-end { display: flex; align-items: center; gap: 10px; }
+.header-start img { width: 32px; height: 32px; }
+.app-menu { display: flex; list-style: none; margin: 0 0 0 12px; padding: 0; gap: 4px; }
+.app-menu-entry a { display: block; padding: 6px 12px; }
+.app-menu-entry--active a { background: rgba(255,255,255,.2); }
+#content-vue { display: flex; gap: 8px; padding: 8px; min-height: calc(100vh - 50px); }
+.app-navigation { width: 260px; flex: none; background: #fff; padding: 8px; border-radius: 12px; }
+.app-navigation ul { list-style: none; margin: 0; padding: 0; }
+.app-navigation-entry > a { display: block; padding: 8px 12px; color: #222; text-decoration: none; border-radius: 8px; }
+.app-navigation-entry.active > a { background: #e5eef5; color: #00679e; }
+.app-navigation-caption { padding: 12px 12px 4px; font-size: 13px; }
+.app-content { flex: 1; background: #fff; padding: 12px; border-radius: 12px; min-width: 0; }
+.app-content-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.breadcrumbs { flex: 1; font-weight: 600; font-size: 20px; }
+.files-list { width: 100%; border-collapse: collapse; }
+.files-list th, .files-list td { padding: 8px 12px; text-align: left; font-weight: 400; }
+.files-list__row td:first-child { font-weight: 600; }
+.files-list__row:hover { background: #f5f5f5; }
+.app-sidebar { width: 320px; flex: none; background: #fff; padding: 12px; border-radius: 12px; }
+.app-sidebar-tabs { display: flex; gap: 4px; margin: 8px 0; }
+.app-sidebar-tabs__tab { background: none; border: 0; padding: 8px 12px; cursor: pointer; font: inherit; }
+.button-vue { display: inline-flex; align-items: center; padding: 8px 16px; border: 0; border-radius: 99px; font: inherit; cursor: pointer; text-decoration: none; }
+.button-vue--primary { background: #00679e; color: #fff; }
+.button-vue--secondary { background: #e5eef5; color: #00679e; }
+.button-vue--tertiary { background: transparent; color: #222; }
+input, textarea, select { font: inherit; padding: 8px 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; color: #222; }
+.field { display: grid; gap: 4px; margin: 10px 0; }
+.modal-mask { padding: 32px; display: flex; justify-content: center; background: rgba(0,0,0,.4); margin-top: 8px; border-radius: 12px; }
+.modal-container, .dialog { width: 460px; max-width: 100%; background: #fff; padding: 20px; border-radius: 12px; }
+.modal-header { font-size: 20px; margin: 0 0 8px; }
+.dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.v-popper__inner { display: inline-block; background: #fff; padding: 4px; border-radius: 8px; }
+.v-popper__inner ul { list-style: none; margin: 0; padding: 0; }
+.action-button { padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+.toastify { display: inline-block; padding: 10px 16px; margin: 8px 8px 0 0; background: #fff; border-radius: 8px; }
+.surface-band { padding: 8px; }
+.login-box, .guest-box { width: 380px; max-width: 94vw; margin: 12vh auto 0; padding: 28px; background: #fff; border-radius: 12px; }
+#body-login .wrapper { padding-bottom: 24px; }
+#contentinfo { text-align: center; color: #fff; }
+.quota { font-size: 13px; padding: 8px 12px; }
+.quota progress { width: 100%; }

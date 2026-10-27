@@ -25,7 +25,7 @@ $user=$event->getUser();$uid=$user->getUID();if(!preg_match('/^ast_[a-f0-9]{40}$
    $user->setQuota((string)$body['quotaBytes']);$this->config->setUserValue($uid,'files','quota',(string)$body['quotaBytes']);$this->config->setUserValue($uid,'altstack','quota_bytes',(string)$body['quotaBytes']);$this->config->setUserValue($uid,'altstack','quota_checked',(string)time());
   }catch(\Throwable $e){
    // An expired entitlement must never silently grant a new or unlimited allowance.
-   if(in_array($_SERVER['REQUEST_METHOD']??'', ['PUT','POST','PATCH','MOVE','COPY','MKCOL'],true))throw new StorageNotAvailableException('Cohnsoft storage plan verification is temporarily unavailable.');
+   if(in_array($_SERVER['REQUEST_METHOD']??'', ['PUT','POST','PATCH','MOVE','COPY','MKCOL'],true))throw new StorageNotAvailableException('VigilTech storage plan verification is temporarily unavailable.');
   }
  }
 }
