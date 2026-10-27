@@ -24,3 +24,9 @@ response=await request('http://127.0.0.1/ocs/v2.php/cloud/user?format=json',{hea
 const body=await response.json();assert.equal(response.status,200,JSON.stringify(body));assert.equal(body.ocs.data.id,'ast_ad95d5fa651ba86d8923fe1238d24a4f1988a752');
 console.log('Nextcloud authorization-code login established the correct AltStack account session.');
 
+
+// Exercise navigation registration against real Nextcloud, not just PHP syntax.
+response=await request('http://127.0.0.1/ocs/v2.php/core/navigation/apps?format=json',{headers:{'OCS-APIRequest':'true'}});assert.equal(response.status,200);const navigation=(await response.json()).ocs.data;
+const entries=Array.isArray(navigation)?navigation:Object.values(navigation);
+for(const role of ['desktop','office','search','mail','calendar','social']){const item=entries.find(x=>x.id==='altstack_'+role);assert.ok(item,'Missing custom navigation: '+role);assert.ok(item.icon.includes('navigation-'+role+'.png'),role+' icon URL');const image=await request(new URL(item.icon,'http://127.0.0.1').href);assert.equal(image.status,200,role+' icon must load');assert.ok((image.headers.get('content-type')||'').includes('image/png'));}
+console.log('All six authenticated custom navigation entries and image routes work.');
