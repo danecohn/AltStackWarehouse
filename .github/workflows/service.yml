@@ -16,7 +16,9 @@ jobs:
         with:
           node-version: '24.22.1'
       - name: Verify supplied navigation icons
-        run: node test/test-navigation.mjs
+        run: |
+          node test/test-navigation.mjs
+          node --test test/theme.test.mjs
       - name: Build pinned Nextcloud distribution
         run: |
           docker build -t altstack-warehouse .

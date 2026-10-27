@@ -29,7 +29,8 @@ class Application extends App implements IBootstrap {
   Util::addStyle('altstack','vigiltech/css/goldengate');
   $styleRevision=substr(hash_file('sha256',__DIR__.'/../../css/vigiltech-drive.css'),0,12);
   Util::addStyle('altstack','vigiltech-drive-'.$styleRevision);
-  Util::addScript('altstack','vigiltech');
+  $scriptRevision=substr(hash_file('sha256',__DIR__.'/../../js/vigiltech.js'),0,12);
+  Util::addScript('altstack','vigiltech-'.$scriptRevision);
   $context->injectFn(static function(IConfig $config,INavigationManager $navigation,IURLGenerator $urls){$settings=$config->getSystemValue('altstack',[]);foreach(['desktop'=>['VigilTech desktop',$settings['origin']??''],'office'=>['Vigil Office',$settings['office']??''],'search'=>['Vigil Search',($settings['origin']??'').'/search/'],'mail'=>['Vigil Mail',($settings['origin']??'').'/mail'],'calendar'=>['Vigil Calendar',($settings['origin']??'').'/calendar'],'social'=>['Vigil Social',($settings['origin']??'').'/social']]as$id=>$item)$navigation->add(['id'=>'altstack_'.$id,'order'=>3,'href'=>$item[1],'icon'=>$urls->imagePath('altstack','navigation-'.$id.'.png'),'name'=>$item[0]]);});
  }
 }
