@@ -123,3 +123,14 @@ body#body-login { background: var(--vt-wallpaper) fixed, var(--vt-bg) !important
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
 @media (prefers-reduced-transparency: reduce) { #header, .app-navigation { background: var(--vt-surface) !important; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 @media (forced-colors: active) { :focus-visible { outline-color: Highlight !important; } .button-vue, button, input { border: 1px solid ButtonText !important; } }
+
+/* Real Nextcloud 33 renders the selected fill on the list item as well as its link. */
+.app-navigation .app-navigation-entry.active,
+.app-navigation .app-navigation-entry--active { background:var(--vt-surface)!important; }
+.app-navigation .app-navigation-entry.active > a,
+.app-navigation .app-navigation-entry--active > a,
+.app-navigation .app-navigation-entry > a[aria-current="page"] { background:var(--vt-tint-soft)!important;color:var(--vt-label)!important; }
+.app-navigation .app-navigation-entry.active .app-navigation-entry__name,
+.app-navigation .app-navigation-entry--active .app-navigation-entry__name,
+.app-navigation .app-navigation-entry > a[aria-current="page"] .app-navigation-entry__name { color:var(--vt-label)!important; }
+#header img[src*="/altstack/img/navigation-"] { filter:none!important; }
