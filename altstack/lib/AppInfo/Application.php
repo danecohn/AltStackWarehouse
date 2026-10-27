@@ -24,8 +24,11 @@ class Application extends App implements IBootstrap {
    while(!flock($file,LOCK_EX|LOCK_NB)){if(microtime(true)>$until){http_response_code(503);header('Retry-After: 5');exit('Storage is busy. Please retry.');}usleep(10000);}
    register_shutdown_function(static function()use($file){flock($file,LOCK_UN);fclose($file);});
   }
-  Util::addStyle('altstack','alpine');
-  $context->injectFn(static function(IConfig $config,INavigationManager $navigation){$settings=$config->getSystemValue('altstack',[]);foreach(['desktop'=>['AltStack desktop',$settings['origin']??''],'office'=>['AltOffice',$settings['office']??''],'search'=>['AltStack Search',($settings['origin']??'').'/search/'],'mail'=>['AltStack Mail',($settings['origin']??'').'/mail'],'calendar'=>['AltStack Calendar',($settings['origin']??'').'/calendar'],'social'=>['AltStack Social',($settings['origin']??'').'/social']]as$id=>$item)$navigation->add(['id'=>'altstack_'.$id,'order'=>3,'href'=>$item[1],'icon'=>'','name'=>$item[0]]);});
+  Util::addStyle('altstack','cohnsoft/css/cohnsans');
+  Util::addStyle('altstack','cohnsoft/css/goldengate');
+  Util::addStyle('altstack','cohnsoft-drive');
+  Util::addScript('altstack','cohnsoft');
+  $context->injectFn(static function(IConfig $config,INavigationManager $navigation){$settings=$config->getSystemValue('altstack',[]);foreach(['desktop'=>['Cohnsoft desktop',$settings['origin']??''],'office'=>['Cohnsoft Office',$settings['office']??''],'search'=>['Cohnsoft Search',($settings['origin']??'').'/search/'],'mail'=>['Cohnsoft Mail & Calendar',($settings['origin']??'').'/mail'],'calendar'=>['Cohnsoft Calendar',($settings['origin']??'').'/calendar'],'social'=>['Cohnsoft Social',($settings['origin']??'').'/social']]as$id=>$item)$navigation->add(['id'=>'altstack_'.$id,'order'=>3,'href'=>$item[1],'icon'=>'','name'=>$item[0]]);});
  }
 }
 
