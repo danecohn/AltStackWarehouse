@@ -4,7 +4,7 @@
 // gradients (every colour stop) and translucent glass layers, in the base state and with :hover, :focus, :focus-visible
 // and :active styles forced on every element. Also checks form-control borders at 3:1.
 (() => {
-  const parse = c => { const m = c && c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[ ,\/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p[3] === undefined ? 1 : p[3] }; };
+  const parse = c => { const q = c && c.match(/color\(srgb ([^)]+)\)/); if (q) { const p = q[1].split(/[ \/]+/).filter(Boolean).map(Number); return { r: p[0] * 255, g: p[1] * 255, b: p[2] * 255, a: p[3] === undefined ? 1 : p[3] }; } const m = c && c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[ ,\/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p[3] === undefined ? 1 : p[3] }; };
   const lum = ({ r, g, b }) => { const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }; return .2126 * f(r) + .7152 * f(g) + .0722 * f(b); };
   const over = (t, b) => { const a = t.a + b.a * (1 - t.a); return a === 0 ? { r: 0, g: 0, b: 0, a: 0 } : { r: (t.r * t.a + b.r * b.a * (1 - t.a)) / a, g: (t.g * t.a + b.g * b.a * (1 - t.a)) / a, b: (t.b * t.a + b.b * b.a * (1 - t.a)) / a, a }; };
   const ratio = (x, y) => { const a = lum(x), b = lum(y); return (Math.max(a, b) + .05) / (Math.min(a, b) + .05); };
@@ -17,7 +17,7 @@
     const img = cs.backgroundImage;
     if (!img || img === 'none') return col.a > 0 ? [col] : [];
     if (/url\(/.test(img)) return [{ r: 128, g: 128, b: 128, a: 1, image: true }];
-    const stops = (img.match(/rgba?\([^)]+\)/g) || []).map(parse).filter(s => s && s.a > 0);
+    const stops = (img.match(/(?:rgba?|color)\([^)]+\)/g) || []).map(parse).filter(s => s && s.a > 0);
     return dedupe([...(col.a > 0 ? [col] : []), ...stops.map(s => over(s, col.a > 0 ? col : { r: 0, g: 0, b: 0, a: 0 }))]);
   };
   const backgrounds = el => {

@@ -48,3 +48,4 @@ input, textarea, select { font: inherit; padding: 8px 10px; border: 1px solid #c
 #contentinfo { text-align: center; color: #fff; }
 .quota { font-size: 13px; padding: 8px 12px; }
 .quota progress { width: 100%; }
+@media (max-width: 1000px) { #content-vue { flex-direction: column; } .app-navigation, .app-sidebar { width: auto; } #header { height: auto; flex-wrap: wrap; padding: 6px 12px; } .app-content-toolbar { flex-wrap: wrap; } .files-list th, .files-list td { padding: 8px 6px; } }

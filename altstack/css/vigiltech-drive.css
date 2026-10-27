@@ -37,23 +37,25 @@ html:root:not(#vigil) {
 body, input, button, select, textarea { font-family: var(--vt-font) !important; }
 a:not(.button, .button-vue, [class*="app-menu"], [class*="app-navigation"], [class*="files-list"]) { color: var(--vt-tint-strong); text-underline-offset: 3px; }
 :focus-visible { outline: 3px solid var(--vt-tint-strong) !important; outline-offset: 3px; box-shadow: none; }
+progress, input[type="checkbox"], input[type="radio"], input[type="range"] { accent-color: var(--vt-pink-600); }
 ::selection { background: var(--vt-tint-soft); color: var(--vt-label); }
 
 /* Signed-in pages: wallpaper behind a frosted header and sidebar; the content sheet itself is a solid surface. */
 body#body-user, body#body-settings { background: var(--vt-wallpaper) fixed, var(--vt-bg) !important; color: var(--vt-label); }
 #header {
-  background: var(--vt-glass) !important; color: var(--vt-label) !important; border-bottom: 1px solid var(--vt-separator);
+  background: color-mix(in srgb, var(--vt-surface) 88%, transparent) !important; color: var(--vt-label) !important; border-bottom: 1px solid var(--vt-separator);
   box-shadow: inset 0 1px 0 var(--vt-glass-edge), var(--vt-shadow-1);
   -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6);
 }
 #header .header-start, #header .header-end, #header .header-left, #header .header-right, #header .app-menu-entry__name, #header .header-appname, #header a { color: var(--vt-label) !important; }
 #header .app-menu-entry a, #header .app-menu-entry { border-radius: var(--vt-r-control); }
 #header .app-menu-entry:hover, #header .app-menu-entry a:hover { background: var(--vt-fill); color: var(--vt-label) !important; }
-#header .app-menu-entry--active, #header .app-menu-entry.app-menu-entry--active { background: var(--vt-tint-soft); color: var(--vt-tint-strong) !important; }
+#header .app-menu-entry--active, #header .app-menu-entry.app-menu-entry--active { background: var(--vt-surface); color: var(--vt-tint-strong) !important; }
+#header .app-menu-entry--active a, #header .app-menu-entry--active a:hover { background: transparent !important; }
 #header .app-menu-entry--active .app-menu-entry__name { color: var(--vt-tint-strong) !important; }
 
 #content, #content-vue { background: transparent !important; }
-.app-navigation { background: var(--vt-glass) !important; color: var(--vt-label) !important; border-right: 1px solid var(--vt-separator) !important; -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6); }
+.app-navigation { background: color-mix(in srgb, var(--vt-surface) 90%, transparent) !important; color: var(--vt-label) !important; border-right: 1px solid var(--vt-separator) !important; -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6); }
 .app-navigation .app-navigation-entry > a, .app-navigation .app-navigation-entry__name, .app-navigation .app-navigation-caption { color: var(--vt-label); }
 .app-navigation .app-navigation-caption { color: var(--vt-label-2); }
 .app-navigation .app-navigation-entry:hover > a, .app-navigation .app-navigation-entry:focus-within > a { background: var(--vt-fill); color: var(--vt-label); }
@@ -106,7 +108,7 @@ input:disabled, textarea:disabled, select:disabled { background: var(--vt-fill);
 
 /* Login: wallpaper with a solid sheet, so no text sits directly on the image. */
 body#body-login { background: var(--vt-wallpaper) fixed, var(--vt-bg) !important; color: var(--vt-label); }
-#body-login .login-box, #body-login .guest-box, #body-login .wrapper > main, #body-login form.login-form, #body-login .login-form {
+#body-login .login-box, #body-login .guest-box, #body-login .wrapper > main {
   background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: var(--vt-r-sheet) !important; box-shadow: var(--vt-shadow-2), inset 0 1px 0 var(--vt-glass-edge) !important;
 }
 #body-login h1, #body-login h2, #body-login .login-box label, #body-login .guest-box p { color: var(--vt-label); }
@@ -114,7 +116,7 @@ body#body-login { background: var(--vt-wallpaper) fixed, var(--vt-bg) !important
   display: block; width: fit-content; max-width: 92vw; margin: 12px auto 0; padding: 6px 14px; background: var(--vt-surface) !important; color: var(--vt-label) !important; border-radius: 99px; box-shadow: 0 0 0 1px var(--vt-separator);
 }
 #body-login footer a, #body-login #contentinfo a, #body-login .footer a { color: var(--vt-tint-strong) !important; }
-#body-login a.button, #body-login .login-box a[href*="user_oidc"] { background: var(--vt-pink-600); color: #ffffff; border-radius: var(--vt-r-control); font-weight: 600; }
+#body-login a.button, #body-login .login-box a[href*="user_oidc"] { display: block; text-align: center; padding: 8px 16px; text-decoration: none; background: var(--vt-pink-600); color: #ffffff; border-radius: var(--vt-r-control); font-weight: 600; }
 #body-login a.button:hover, #body-login .login-box a[href*="user_oidc"]:hover { background: var(--vt-pink-700); color: #ffffff; }
 
 @media (max-width: 700px) { #header { min-height: 52px; } .app-navigation { max-width: 88vw; } .app-content { border-radius: 0; } }
